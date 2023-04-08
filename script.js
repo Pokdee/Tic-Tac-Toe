@@ -1,10 +1,12 @@
 "use Strict";
 
 const board = document.querySelector(".board");
+const icon = document.querySelector(".icon");
+console.log(icon);
+const gameboard = [...Array(9)].map((x) => " ");
 
-const createBoard = () => {
-  const gameboard = [...Array(9)].map((x) => " ");
-  const displayBoard = function () {
+const game = () => {
+  const display = function () {
     const arr = this.gameboard;
     for (let i = 0; i < 3; i++) {
       console.log(arr[i], arr[i + 1], arr[i + 2]);
@@ -17,15 +19,9 @@ const createBoard = () => {
     console.log(gameboard);
   };
 
-  return { gameboard, displayBoard, clicker };
+  return { display, clicker };
 };
 
-const createplayer = (name) => {
-  return { name };
-};
+const Board = game();
 
-const playerOne = createplayer("player_1");
-const playerTwo = createplayer("player_2");
-
-const Gameboard = createBoard();
-board.addEventListener("click", (e) => Gameboard.clicker(e));
+board.addEventListener("click", (e) => Board.clicker(e));
