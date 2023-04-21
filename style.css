@@ -109,3 +109,39 @@ body {
   transform: translate(0%, 300%);
   transform: rotate(-50deg);
 }
+
+/*OverFlow*/
+
+.overflow {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(160, 160, 144, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  gap: 15rem;
+  position: absolute;
+}
+.winner {
+  display: block;
+  font-size: 5rem;
+  margin-top: 3rem;
+}
+.rest_btn {
+  font-size: 1.5rem;
+  width: 10rem;
+  height: 4rem;
+  border-radius: 2rem;
+  border: none;
+}
+.rest_btn:hover {
+  background-color: green;
+  cursor: pointer;
+}
+
+/*Hide overflow*/
+
+.hide {
+  display: none;
+}

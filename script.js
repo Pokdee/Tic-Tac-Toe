@@ -5,6 +5,8 @@ const icon = document.querySelector(".icon");
 const player1 = document.querySelector(".player_1");
 const player2 = document.querySelector(".player_2");
 const select = document.querySelector(".select_icon");
+const overflow = document.querySelector(".overflow");
+const winner = document.querySelector(".winner_name");
 let target;
 
 const player = (playNum) => {
@@ -59,6 +61,8 @@ const game = () => {
   const winManager = function (playerIcon, playerObj) {
     console.log(`it ${playerObj.name}`);
     console.log(playerObj);
+
+    let match;
     let arr = playerObj.gameboard;
     if (
       arr[0] === playerIcon ||
@@ -70,17 +74,17 @@ const game = () => {
     ) {
       if (arr[0] && arr[1] && arr[2]) {
         if (arr[0] === arr[1] && arr[1] === arr[2]) {
-          console.log("match");
+          match = true;
         }
       }
       if (arr[0] && arr[4] && arr[8]) {
         if (arr[0] === arr[4] && arr[4] === arr[8]) {
-          console.log("match");
+          match = true;
         }
       }
       if (arr[0] && arr[3] && arr[6]) {
         if (arr[0] === arr[3] && arr[3] === arr[6]) {
-          console.log("match");
+          match = true;
         }
       }
     }
@@ -92,7 +96,7 @@ const game = () => {
     ) {
       if (arr[1] && arr[4] && arr[7]) {
         if (arr[1] === arr[4] && arr[4] === arr[7]) {
-          console.log("match line 89");
+          match = true;
         }
       }
     }
@@ -105,19 +109,19 @@ const game = () => {
     ) {
       if (arr[2] && arr[4] && arr[6]) {
         if (arr[2] === arr[4] && arr[4] === arr[6]) {
-          console.log("match line 89");
+          match = true;
         }
       }
       if (arr[2] && arr[5] && arr[8]) {
         if (arr[2] === arr[5] && arr[5] === arr[8]) {
-          console.log("match line 89");
+          match = true;
         }
       }
     }
     if (arr[3] === playerIcon || arr[4] === playerIcon) {
       if (arr[3] && arr[4] && arr[5]) {
         if (arr[3] === arr[4] && arr[4] === arr[5]) {
-          console.log("match line 108");
+          match = true;
         }
       }
     }
@@ -128,10 +132,17 @@ const game = () => {
     ) {
       if (arr[6] && arr[7] && arr[8]) {
         if (arr[6] === arr[7] && arr[7] === arr[8]) {
-          console.log("match line 117");
+          match = true;
         }
       }
     }
+    return match;
+  };
+
+  //display overflow when win or loss
+  const overflower = function (playername) {
+    overflow.classList.remove("hide");
+    winner.textContent = playername;
   };
 
   //Click displayer
@@ -150,7 +161,10 @@ const game = () => {
 
           player.gameboard[cellNum] = "X";
 
-          winManager(playerIcon, player);
+          const result = winManager(playerIcon, player);
+          if (result) {
+            overflower(player.name);
+          }
           console.log(player.gameboard);
         }
 
@@ -166,7 +180,7 @@ const game = () => {
     }
   };
 
-  return { clicker, gameStart, colorCont, changeColor, winManager };
+  return { clicker, gameStart, colorCont, changeColor, winManager, overflower };
 };
 
 const Board = game();
