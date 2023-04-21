@@ -7,8 +7,8 @@ const player2 = document.querySelector(".player_2");
 const select = document.querySelector(".select_icon");
 const overflow = document.querySelector(".overflow");
 const winner = document.querySelector(".winner_name");
+const btnRestart = document.querySelector(".rest_btn");
 let target;
-
 const player = (playNum) => {
   const name = `Player ${playNum}`;
   const gameboard = new Array(9);
@@ -39,6 +39,23 @@ const game = () => {
     }
   };
 
+  //overflow manager
+  const manageScreen = function (player1, player2) {
+    // console.log("click");
+    overflow.classList.add("hide");
+    player1.gameboard = player2.gameboard = new Array(9);
+    console.log(board.children);
+    for (let ele of board.children) {
+      const cell = ele.children[0];
+      if (
+        cell.classList.contains("cellInX") ||
+        cell.classList.contains("cellInO")
+      ) {
+        cell.className = "";
+      }
+    }
+  };
+
   //Game Start
 
   const gameStart = function (event) {
@@ -59,8 +76,8 @@ const game = () => {
 
   //Data manage
   const winManager = function (playerIcon, playerObj) {
-    console.log(`it ${playerObj.name}`);
-    console.log(playerObj);
+    // console.log(`it ${playerObj.name}`);
+    // console.log(playerObj);
 
     let match;
     let arr = playerObj.gameboard;
@@ -164,8 +181,9 @@ const game = () => {
           const result = winManager(playerIcon, player);
           if (result) {
             overflower(player.name);
+            // console.log(overflow);
           }
-          console.log(player.gameboard);
+          // console.log(player.gameboard);
         }
 
         //if O
@@ -174,16 +192,25 @@ const game = () => {
           player.gameboard[cellNum] = "O";
 
           winManager(playerIcon, player);
-          console.log(player.gameboard);
+          // console.log(player.gameboard);
         }
       }
     }
   };
 
-  return { clicker, gameStart, colorCont, changeColor, winManager, overflower };
+  return {
+    clicker,
+    gameStart,
+    colorCont,
+    changeColor,
+    winManager,
+    overflower,
+    manageScreen,
+  };
 };
 
 const Board = game();
 
 board.addEventListener("click", (e) => Board.gameStart(e));
 window.addEventListener("load", () => Board.changeColor());
+btnRestart.addEventListener("click", () => Board.manageScreen(p1, p2));
