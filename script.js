@@ -5,52 +5,137 @@ const icon = document.querySelector(".icon");
 const player1 = document.querySelector(".player_1");
 const player2 = document.querySelector(".player_2");
 const select = document.querySelector(".select_icon");
-const gameboard = [...Array(9)].map((x) => " ");
 let target;
+
+const player = (playNum) => {
+  const name = `Player ${playNum}`;
+  const gameboard = new Array(9);
+  return { name, gameboard };
+};
+
+const p1 = player(1);
+const p2 = player(2);
+
 let checker = true;
 
 const game = () => {
-  //color change
+  //color control
 
   const colorCont = function (p1clr, p2clr) {
     player1.style.backgroundColor = `${p1clr}`;
     player2.style.backgroundColor = `${p2clr}`;
   };
 
+  //color Change
+
+  const changeColor = function () {
+    if (checker) {
+      colorCont("green", "red");
+    }
+    if (!checker) {
+      colorCont("red", "green");
+    }
+  };
+
   //Game Start
 
   const gameStart = function (event) {
     target = event.target;
+
     if (checker) {
-      const logo = icon.value;
-      clicker(logo);
+      const playerIcon = icon.value;
+
+      clicker(playerIcon, p1);
     }
     if (!checker) {
-      const logo = icon.value === "X" ? "O" : "X";
-      clicker(logo);
+      const comIcon = icon.value === "X" ? "O" : "X";
+      clicker(comIcon, p2);
     }
     checker = !checker;
+    changeColor();
   };
 
-  //Switch player
-
-  const playerChange = function (player) {
-    const playerIcon = icon.value;
-    const comIcon = playerIcon === "X" ? "O" : "X";
-
-    if (player === 1) {
-      clicker(playerIcon);
-      checker = !checker;
-      console.log(checker);
+  //Data manage
+  const winManager = function (playerIcon, playerObj) {
+    console.log(`it ${playerObj.name}`);
+    console.log(playerObj);
+    let arr = playerObj.gameboard;
+    if (
+      arr[0] === playerIcon ||
+      arr[2] === playerIcon ||
+      arr[3] === playerIcon ||
+      arr[4] === playerIcon ||
+      arr[6] === playerIcon ||
+      arr[8] === playerIcon
+    ) {
+      if (arr[0] && arr[1] && arr[2]) {
+        if (arr[0] === arr[1] && arr[1] === arr[2]) {
+          console.log("match");
+        }
+      }
+      if (arr[0] && arr[4] && arr[8]) {
+        if (arr[0] === arr[4] && arr[4] === arr[8]) {
+          console.log("match");
+        }
+      }
+      if (arr[0] && arr[3] && arr[6]) {
+        if (arr[0] === arr[3] && arr[3] === arr[6]) {
+          console.log("match");
+        }
+      }
     }
-    if (player === 2) {
-      clicker(comIcon);
-      checker = !checker;
+
+    if (
+      arr[1] === playerIcon ||
+      arr[4] === playerIcon ||
+      arr[7] === playerIcon
+    ) {
+      if (arr[1] && arr[4] && arr[7]) {
+        if (arr[1] === arr[4] && arr[4] === arr[7]) {
+          console.log("match line 89");
+        }
+      }
+    }
+    if (
+      arr[2] === playerIcon ||
+      arr[4] === playerIcon ||
+      arr[5] === playerIcon ||
+      arr[6] === playerIcon ||
+      arr[8] === playerIcon
+    ) {
+      if (arr[2] && arr[4] && arr[6]) {
+        if (arr[2] === arr[4] && arr[4] === arr[6]) {
+          console.log("match line 89");
+        }
+      }
+      if (arr[2] && arr[5] && arr[8]) {
+        if (arr[2] === arr[5] && arr[5] === arr[8]) {
+          console.log("match line 89");
+        }
+      }
+    }
+    if (arr[3] === playerIcon || arr[4] === playerIcon) {
+      if (arr[3] && arr[4] && arr[5]) {
+        if (arr[3] === arr[4] && arr[4] === arr[5]) {
+          console.log("match line 108");
+        }
+      }
+    }
+    if (
+      arr[6] === playerIcon ||
+      arr[7] === playerIcon ||
+      arr[8] === playerIcon
+    ) {
+      if (arr[6] && arr[7] && arr[8]) {
+        if (arr[6] === arr[7] && arr[7] === arr[8]) {
+          console.log("match line 117");
+        }
+      }
     }
   };
 
   //Click displayer
-  const clicker = function (icon) {
+  const clicker = function (playerIcon, player) {
     if (target.closest(".cell")) {
       select.style.display = "none";
 
@@ -60,35 +145,31 @@ const game = () => {
         return;
       } else {
         //if X
-        if (icon === "X") {
+        if (playerIcon === "X") {
           cell.classList.add("cellInX");
 
-          gameboard[cellNum] = "X";
-          // console.log(gameboard);
+          player.gameboard[cellNum] = "X";
+
+          winManager(playerIcon, player);
+          console.log(player.gameboard);
         }
 
         //if O
-        if (icon === "O") {
+        if (playerIcon === "O") {
           cell.classList.add("cellInO");
+          player.gameboard[cellNum] = "O";
 
-          gameboard[cellNum] = "O";
-          // console.log(gameboard);
+          winManager(playerIcon, player);
+          console.log(player.gameboard);
         }
       }
     }
   };
 
-  return { clicker, gameStart, playerChange, colorCont };
+  return { clicker, gameStart, colorCont, changeColor, winManager };
 };
 
 const Board = game();
 
 board.addEventListener("click", (e) => Board.gameStart(e));
-
-//Display Gameboard array result
-//  const display = function () {
-//   const arr = this.gameboard;
-//   for (let i = 0; i < 3; i++) {
-//     console.log(arr[i], arr[i + 1], arr[i + 2]);
-//   }
-// };
+window.addEventListener("load", () => Board.changeColor());
