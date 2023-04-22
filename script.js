@@ -41,7 +41,6 @@ const game = () => {
 
   //overflow manager
   const manageScreen = function (player1, player2) {
-    // console.log("click");
     overflow.classList.add("hide");
     player1.gameboard = player2.gameboard = new Array(9);
     console.log(board.children);
@@ -54,6 +53,9 @@ const game = () => {
         cell.className = "";
       }
     }
+    select.style.display = "block";
+    colorCont("green", "red");
+    checker = true;
   };
 
   //Game Start
@@ -76,9 +78,6 @@ const game = () => {
 
   //Data manage
   const winManager = function (playerIcon, playerObj) {
-    // console.log(`it ${playerObj.name}`);
-    // console.log(playerObj);
-
     let match;
     let arr = playerObj.gameboard;
     if (
@@ -181,9 +180,7 @@ const game = () => {
           const result = winManager(playerIcon, player);
           if (result) {
             overflower(player.name);
-            // console.log(overflow);
           }
-          // console.log(player.gameboard);
         }
 
         //if O
@@ -191,8 +188,10 @@ const game = () => {
           cell.classList.add("cellInO");
           player.gameboard[cellNum] = "O";
 
-          winManager(playerIcon, player);
-          // console.log(player.gameboard);
+          const result = winManager(playerIcon, player);
+          if (result) {
+            overflower(player.name);
+          }
         }
       }
     }
